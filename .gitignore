@@ -6,5 +6,9 @@ build/
 *.tmp
 __pycache__/
 .env
-.env
+*.tmp
+bin/
+build/
+*.tmp
+_pycache_/
 .env
