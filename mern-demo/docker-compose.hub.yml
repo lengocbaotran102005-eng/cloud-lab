@@ -1,0 +1,18 @@
+services:
+  backend:
+    image: letran1110/mern-backend:2.0
+    container_name: mern-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+    restart: always
+
+  frontend:
+    image: letran1110/mern-frontend:2.0
+    container_name: mern-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: always
