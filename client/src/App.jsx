@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_URL = 'http://localhost:5000/api/students';
+const API_URL = 'https://mern-backend-237701.onrender.com/api/students';
 
 function App() {
   const [students, setStudents] = useState([]);
@@ -37,7 +37,8 @@ function App() {
         setEditingId(null);
         setForm({ studentId: '', name: '', email: '' });
         fetchStudents();
-      });
+      })
+      .catch(err => console.error(err));
     } else {
       fetch(API_URL, {
         method: 'POST',
@@ -47,7 +48,8 @@ function App() {
       .then(() => {
         setForm({ studentId: '', name: '', email: '' });
         fetchStudents();
-      });
+      })
+      .catch(err => console.error(err));
     }
   };
 
@@ -62,7 +64,8 @@ function App() {
 
   const handleDelete = (id) => {
     fetch(`${API_URL}/${id}`, { method: 'DELETE' })
-      .then(() => fetchStudents());
+      .then(() => fetchStudents())
+      .catch(err => console.error(err));
   };
 
   return (
@@ -107,17 +110,21 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {students.map((s, index) => (
-            <tr key={s._id || index}>
-              <td>{s.studentId || s.mssv || 'N/A'}</td>
-              <td>{s.name || s.hoTen || 'N/A'}</td>
-              <td>{s.email}</td>
-              <td style={{ display: 'flex', gap: '5px', justifyContent: 'center' }}>
-                <button onClick={() => handleEdit(s)} style={{ backgroundColor: '#faad14', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>Edit</button>
-                <button onClick={() => handleDelete(s._id)} style={{ backgroundColor: '#ff4d4f', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>Delete</button>
-              </td>
-            </tr>
-          ))}
+          {students.length === 0 ? (
+            <tr><td colSpan="4">Chưa có dữ liệu sinh viên</td></tr>
+          ) : (
+            students.map((s, index) => (
+              <tr key={s._id || index}>
+                <td>{s.studentId || s.mssv || 'N/A'}</td>
+                <td>{s.name || s.hoTen || 'N/A'}</td>
+                <td>{s.email}</td>
+                <td style={{ display: 'flex', gap: '5px', justifyContent: 'center' }}>
+                  <button onClick={() => handleEdit(s)} style={{ backgroundColor: '#faad14', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => handleDelete(s._id)} style={{ backgroundColor: '#ff4d4f', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>Delete</button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
